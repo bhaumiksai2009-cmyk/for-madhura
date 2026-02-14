@@ -6,40 +6,47 @@
     <title>For Madhura ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #fff0f3; --pink: #ff4d6d; --rose: #c9184a; --gold: #ffd700; }
+        :root { --bg: #fff0f3; --pink: #ff4d6d; --rose: #c9184a; }
         body { 
             margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; width: 100vw; overflow: hidden; text-align: center; 
-            touch-action: none; /* Prevents scrolling while chasing buttons */
+            transition: background 2s ease;
         }
         
+        /* Elements from previous versions */
         .heart { width: 80px; height: 80px; background: var(--pink); position: relative; transform: rotate(-45deg); animation: beat 0.8s infinite alternate; margin: 0 auto 30px; cursor: pointer; }
         .heart:before, .heart:after { content: ""; width: 80px; height: 80px; background: var(--pink); border-radius: 50%; position: absolute; }
         .heart:before { top: -40px; left: 0; }
         .heart:after { left: 40px; top: 0; }
         @keyframes beat { to { transform: scale(1.1) rotate(-45deg); } }
 
-        #main-content { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        #main-content, #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
         
         .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; }
-        button { padding: 15px 35px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: transform 0.2s; }
-        #of-course { background: var(--pink); color: white; z-index: 5; position: relative; box-shadow: 0 0 20px rgba(255, 77, 109, 0.4); }
+        button { padding: 15px 35px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
+        
+        #of-course { background: var(--pink); color: white; z-index: 5; position: relative; }
         #yes-btn { background: white; color: var(--pink); border: 2px solid var(--pink); position: absolute; z-index: 999; transition: all 0.3s ease; }
 
-        #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
-        .reason-card { 
-            background: white; padding: 30px; border-radius: 20px; 
-            box-shadow: 0 0 40px rgba(255, 77, 109, 0.3); 
-            margin: 20px; max-width: 300px; border: 2px solid var(--pink);
-            animation: glow 2s infinite alternate;
-        }
-        @keyframes glow { from { box-shadow: 0 0 20px #ff4d6d; } to { box-shadow: 0 0 40px #ff4d6d; } }
+        .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 77, 109, 0.3); margin: 20px; max-width: 300px; border: 2px solid var(--pink); }
 
-        /* Magic Sparkle Effect */
+        /* The Close Button */
+        #exit-btn {
+            margin-top: 20px;
+            background: #333;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            padding: 10px 20px;
+        }
+
+        /* Blackout Effect */
+        .blackout { background: black !important; transition: 2s; }
+        .fade-out { opacity: 0; transition: 1.5s; }
+
         .sparkle { position: absolute; pointer-events: none; animation: fly 1s forwards; z-index: 1000; color: var(--rose); }
         @keyframes fly { to { transform: translate(var(--tw), var(--th)) rotate(360deg); opacity: 0; } }
-        
         .particle { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
     </style>
@@ -64,28 +71,25 @@
     <div id="final-slide">
         <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 3.5rem;">I Love You! ❤️</h1>
         <div class="reason-card">
-            <h3 style="margin-top:0; color: var(--pink);">The Reason:</h3>
             <p style="font-size: 1.2rem; font-style: italic;">"I don't need any reason to love you."</p>
         </div>
+        <button id="exit-btn" onclick="exitProgram()">Close Surprise</button>
     </div>
 
     <audio id="audio" src="music.mp3" loop></audio>
 
     <script>
         let scale = 1;
-
-        // COOL EFFECT: Sparkle trail on touch/mouse
         document.addEventListener('mousemove', (e) => spawnSparkle(e.pageX, e.pageY));
         document.addEventListener('touchmove', (e) => spawnSparkle(e.touches[0].pageX, e.touches[0].pageY));
 
         function spawnSparkle(x, y) {
             const s = document.createElement('div');
             s.className = 'sparkle';
-            s.innerHTML = ['✨', '💖', '⭐'][Math.floor(Math.random() * 3)];
-            s.style.left = x + 'px';
-            s.style.top = y + 'px';
-            s.style.setProperty('--tw', (Math.random() * 100 - 50) + 'px');
-            s.style.setProperty('--th', (Math.random() * 100 - 50) + 'px');
+            s.innerHTML = '✨';
+            s.style.left = x + 'px'; s.style.top = y + 'px';
+            s.style.setProperty('--tw', (Math.random() * 80 - 40) + 'px');
+            s.style.setProperty('--th', (Math.random() * 80 - 40) + 'px');
             document.body.appendChild(s);
             setTimeout(() => s.remove(), 1000);
         }
@@ -117,13 +121,21 @@
             setInterval(() => {
                 const p = document.createElement('div');
                 p.classList.add('particle');
-                p.innerHTML = ['❤️', '⭐', '🌹', '✨', '🌸'][Math.floor(Math.random() * 5)];
+                p.innerHTML = ['❤️', '⭐', '🌹'][Math.floor(Math.random() * 3)];
                 p.style.left = Math.random() * 100 + "vw";
-                p.style.fontSize = Math.random() * 20 + 20 + "px";
+                p.style.fontSize = "25px";
                 p.style.animationDuration = (Math.random() * 3 + 2) + "s";
                 document.body.appendChild(p);
-                setTimeout(() => p.remove(), 5000);
-            }, 80);
+            }, 100);
+        }
+
+        // EXIT FUNCTION
+        function exitProgram() {
+            document.body.classList.add('blackout');
+            document.getElementById('final-slide').classList.add('fade-out');
+            setTimeout(() => {
+                document.body.innerHTML = "<h1 style='color: white; font-family: Dancing Script; font-size: 2rem; margin-top: 45vh;'>Forever Yours. ❤️</h1>";
+            }, 2000);
         }
     </script>
 </body>
