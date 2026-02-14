@@ -11,45 +11,43 @@
             margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; width: 100vw; overflow: hidden; text-align: center; 
-            transition: background 2s ease; touch-action: none;
+            touch-action: none;
         }
 
-        /* Name Check Screen */
-        #gatekeeper { z-index: 2000; background: var(--bg); position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* 0. Gatekeeper Screen */
+        #gatekeeper { z-index: 2000; position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         input { padding: 12px; border-radius: 10px; border: 2px solid var(--pink); margin-top: 15px; text-align: center; font-size: 1.1rem; outline: none; }
         .gate-btn { background: var(--pink); color: white; padding: 10px 25px; border: none; border-radius: 10px; margin-top: 15px; cursor: pointer; font-weight: bold; }
 
-        /* Heart Loader */
+        /* 1. Heart Start Screen */
+        #start-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
         .heart { width: 80px; height: 80px; background: var(--pink); position: relative; transform: rotate(-45deg); animation: beat 0.8s infinite alternate; margin: 0 auto 30px; cursor: pointer; }
         .heart:before, .heart:after { content: ""; width: 80px; height: 80px; background: var(--pink); border-radius: 50%; position: absolute; }
         .heart:before { top: -40px; left: 0; }
         .heart:after { left: 40px; top: 0; }
         @keyframes beat { to { transform: scale(1.1) rotate(-45deg); } }
 
-        #start-screen, #main-content, #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        /* 2. Main Question Screen */
+        #main-content { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; }
         
-        .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; }
-        
-        button { padding: 15px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s ease; }
-        
-        /* YES Button Styles */
-        #yes-btn { background: var(--pink); color: white; z-index: 5; position: relative; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3); }
-        
-        /* NO Button Styles */
+        .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; height: 200px; }
+        button { padding: 15px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s; }
+        #yes-btn { background: var(--pink); color: white; z-index: 5; position: relative; }
         #no-btn { background: white; color: var(--rose); border: 2px solid var(--rose); position: absolute; z-index: 999; transition: all 0.3s ease; }
 
+        /* 3. Reason Slide */
+        #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
         .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 77, 109, 0.2); margin: 20px; max-width: 300px; border: 2px solid var(--pink); }
         #exit-btn { margin-top: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 10px; opacity: 0.7; }
         
         .final-photo { width: 280px; height: 280px; object-fit: cover; border-radius: 20px; border: 8px solid white; margin-bottom: 25px; animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         
-        .blackout { background: black !important; }
+        /* Effects */
+        .blackout { background: black !important; transition: background 2s; }
         .fade-out { opacity: 0; transition: 1s; }
-        
         .sparkle { position: absolute; pointer-events: none; animation: fly 1s forwards; z-index: 1001; color: var(--rose); }
         @keyframes fly { to { transform: translate(var(--tw), var(--th)) rotate(360deg); opacity: 0; } }
-        
         .particle { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
     </style>
@@ -86,8 +84,6 @@
         <button id="exit-btn" onclick="exitProgram()">Close Surprise</button>
     </div>
 
-    <audio id="audio" src="music.mp3" loop></audio>
-
     <script>
         let scale = 1;
 
@@ -104,14 +100,12 @@
         function begin() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'flex';
-            document.getElementById('audio').play();
         }
 
         function dodge() {
             const noBtn = document.getElementById('no-btn');
             const yesBtn = document.getElementById('yes-btn');
             
-            // Boundary Math for NO button
             const margin = 80;
             const maxX = window.innerWidth - noBtn.offsetWidth - margin;
             const maxY = window.innerHeight - noBtn.offsetHeight - margin;
@@ -122,7 +116,6 @@
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
             
-            // Growth for YES button
             scale += 0.45;
             yesBtn.style.transform = `scale(${scale})`;
         }
@@ -156,7 +149,7 @@
             }, 1000);
         }
 
-        // Sparkle Trail Effect
+        // Sparkle Trail
         document.addEventListener('mousemove', (e) => spawnSparkle(e.pageX, e.pageY));
         document.addEventListener('touchmove', (e) => spawnSparkle(e.touches[0].pageX, e.touches[0].pageY));
 
@@ -173,3 +166,4 @@
     </script>
 </body>
 </html>
+
