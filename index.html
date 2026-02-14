@@ -2,37 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Madhura ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #fff0f3; --pink: #ff4d6d; --rose: #c9184a; }
-        body { margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; text-align: center; }
+        body { 
+            margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; 
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; width: 100vw; overflow: hidden; text-align: center; 
+        }
         
-        .heart { width: 80px; height: 80px; background: var(--pink); position: relative; transform: rotate(-45deg); animation: beat 0.8s infinite alternate; margin: 0 auto 30px; cursor: pointer; z-index: 100; }
+        /* Start Heart */
+        .heart { width: 80px; height: 80px; background: var(--pink); position: relative; transform: rotate(-45deg); animation: beat 0.8s infinite alternate; margin: 0 auto 30px; cursor: pointer; }
         .heart:before, .heart:after { content: ""; width: 80px; height: 80px; background: var(--pink); border-radius: 50%; position: absolute; }
         .heart:before { top: -40px; left: 0; }
         .heart:after { left: 40px; top: 0; }
         @keyframes beat { to { transform: scale(1.1) rotate(-45deg); } }
 
-        #main-content { display: none; width: 90%; max-width: 400px; }
-        .note-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        #main-content { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
         
-        .btn-wrap { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 30px; min-height: 200px; }
+        /* Question Area */
+        #question-area { width: 100%; }
+        .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; }
 
         button { 
-            padding: 15px 25px; border: none; border-radius: 50px; 
-            font-weight: bold; font-size: 1rem; cursor: pointer; 
-            transition: all 0.3s ease-out; /* Smooth growing effect */
+            padding: 15px 35px; border: none; border-radius: 50px; 
+            font-weight: bold; font-size: 1.2rem; cursor: pointer; 
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        #of-course { background: var(--pink); color: white; z-index: 10; position: relative; }
-
+        #of-course { background: var(--pink); color: white; z-index: 5; position: relative; }
         #yes-btn { 
             background: white; color: var(--pink); border: 2px solid var(--pink);
-            position: absolute; z-index: 20;
+            position: absolute; z-index: 999; transition: all 0.3s ease; 
         }
 
+        /* Final Reason Slide */
+        #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+        .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 20px; max-width: 300px; }
+
+        /* Particles */
         .particle { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
     </style>
@@ -41,20 +51,26 @@
 
     <div id="start-screen" onclick="begin()">
         <div class="heart"></div>
-        <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 2.5rem;">For Madhura</h1>
-        <p>Tap the heart for your surprise... ❤️</p>
+        <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 3rem;">For Madhura</h1>
+        <p>Tap to start our song ❤️</p>
     </div>
 
     <div id="main-content">
-        <h2 style="font-family: 'Dancing Script'; color: var(--rose);">Happy Valentine's Day!</h2>
-        <div class="note-card">
-            <p>"I don't need any reason to love you, Madhura. You are my everything."</p>
+        <div id="question-area">
+            <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 2.5rem;">Madhura,</h1>
+            <h2 style="font-family: 'Poppins';">Will you be my Valentine?</h2>
+            <div class="btn-wrap">
+                <button id="of-course" onclick="celebrate()">Of Course!</button>
+                <button id="yes-btn" onmouseover="dodge()" onclick="dodge()" style="top: 120px;">Yes</button>
+            </div>
         </div>
-        
-        <h3 id="question-text">Will you be my Valentine?</h3>
-        <div class="btn-wrap">
-            <button id="of-course" onclick="celebrate()">Of Course!</button>
-            <button id="yes-btn" onmouseover="dodge()" onclick="dodge()">Yes</button>
+    </div>
+
+    <div id="final-slide">
+        <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 3.5rem;">I Love You! ❤️</h1>
+        <div class="reason-card">
+            <h3 style="margin-top:0; color: var(--pink);">The Reason:</h3>
+            <p style="font-size: 1.2rem; font-style: italic;">"I don't need any reason to love you."</p>
         </div>
     </div>
 
@@ -65,47 +81,36 @@
 
         function begin() {
             document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            const song = document.getElementById('audio');
-            song.play().catch(() => console.log("Audio needs user interaction first"));
+            document.getElementById('main-content').style.display = 'flex';
+            document.getElementById('audio').play();
         }
 
         function dodge() {
             const yesBtn = document.getElementById('yes-btn');
             const ofCourseBtn = document.getElementById('of-course');
 
-            // 1. Move the YES button to a random spot on screen
-            const padding = 100;
-            const newX = Math.random() * (window.innerWidth - padding);
-            const newY = Math.random() * (window.innerHeight - padding);
-            
-            yesBtn.style.position = 'fixed';
-            yesBtn.style.left = `${newX}px`;
-            yesBtn.style.top = `${newY}px`;
+            // Boundary Math: Keeps button strictly on screen
+            const margin = 80;
+            const maxX = window.innerWidth - yesBtn.offsetWidth - margin;
+            const maxY = window.innerHeight - yesBtn.offsetHeight - margin;
 
-            // 2. Make the OF COURSE button bigger
-            scale += 0.3; // Increases size by 30% each time
+            const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
+
+            yesBtn.style.position = 'fixed';
+            yesBtn.style.left = randomX + 'px';
+            yesBtn.style.top = randomY + 'px';
+
+            // Growth Math: "Of Course" gets bigger
+            scale += 0.35;
             ofCourseBtn.style.transform = `scale(${scale})`;
-            
-            // 3. Optional: Make the "Yes" button smaller as it runs away
-            let currentYesScale = 1 - (scale * 0.05);
-            if (currentYesScale > 0.4) {
-                yesBtn.style.transform = `scale(${currentYesScale})`;
-            }
         }
 
         function celebrate() {
-            // Remove buttons
-            document.getElementById('yes-btn').remove();
-            document.getElementById('of-course').remove();
-            document.getElementById('question-text').remove();
-
-            document.getElementById('main-content').innerHTML = `
-                <h1 style='font-family:"Dancing Script"; color:var(--rose); font-size:3.5rem;'>I Love You Madhura! ❤️</h1>
-                <p style="font-size: 1.2rem;">You made the right choice! ✨</p>
-            `;
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-slide').style.display = 'flex';
             
-            // Explosion of hearts, stars, and roses
+            // Start heart, star, and rose rain
             setInterval(() => {
                 const p = document.createElement('div');
                 p.classList.add('particle');
