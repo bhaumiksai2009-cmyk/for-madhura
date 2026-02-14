@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Madhura ❤️</title>
+    <title>For My Love ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #fff0f3; --pink: #ff4d6d; --rose: #c9184a; }
@@ -11,41 +11,33 @@
             margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; width: 100vw; overflow: hidden; text-align: center; 
-            transition: background 2s ease;
+            transition: background 2s ease; touch-action: none;
         }
-        
-        /* Elements from previous versions */
+
+        /* Name Check Screen */
+        #gatekeeper { z-index: 2000; background: var(--bg); position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        input { padding: 12px; border-radius: 10px; border: 2px solid var(--pink); margin-top: 15px; text-align: center; font-size: 1.1rem; outline: none; }
+        .gate-btn { background: var(--pink); color: white; padding: 10px 25px; border: none; border-radius: 10px; margin-top: 15px; cursor: pointer; font-weight: bold; }
+
+        /* Existing Styles */
         .heart { width: 80px; height: 80px; background: var(--pink); position: relative; transform: rotate(-45deg); animation: beat 0.8s infinite alternate; margin: 0 auto 30px; cursor: pointer; }
         .heart:before, .heart:after { content: ""; width: 80px; height: 80px; background: var(--pink); border-radius: 50%; position: absolute; }
         .heart:before { top: -40px; left: 0; }
         .heart:after { left: 40px; top: 0; }
         @keyframes beat { to { transform: scale(1.1) rotate(-45deg); } }
 
-        #main-content, #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
-        
+        #start-screen, #main-content, #final-slide { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
         .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; }
-        button { padding: 15px 35px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
-        
-        #of-course { background: var(--pink); color: white; z-index: 5; position: relative; }
-        #yes-btn { background: white; color: var(--pink); border: 2px solid var(--pink); position: absolute; z-index: 999; transition: all 0.3s ease; }
-
-        .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 77, 109, 0.3); margin: 20px; max-width: 300px; border: 2px solid var(--pink); }
-
-        /* The Close Button */
-        #exit-btn {
-            margin-top: 20px;
-            background: #333;
-            color: white;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            padding: 10px 20px;
-        }
-
-        /* Blackout Effect */
-        .blackout { background: black !important; transition: 2s; }
-        .fade-out { opacity: 0; transition: 1.5s; }
-
-        .sparkle { position: absolute; pointer-events: none; animation: fly 1s forwards; z-index: 1000; color: var(--rose); }
+        button { padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
+        #yes-btn { background: var(--pink); color: white; z-index: 5; position: relative; }
+        #no-btn { background: white; color: var(--rose); border: 2px solid var(--rose); position: absolute; z-index: 999; transition: all 0.3s ease; }
+        .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 77, 109, 0.2); margin: 20px; max-width: 300px; border: 2px solid var(--pink); }
+        #exit-btn { margin-top: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 10px; opacity: 0.7; }
+        .final-photo { width: 280px; height: 280px; object-fit: cover; border-radius: 20px; border: 8px solid white; margin-bottom: 25px; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .blackout { background: black !important; }
+        .fade-out { opacity: 0; transition: 1s; }
+        .sparkle { position: absolute; pointer-events: none; animation: fly 1s forwards; z-index: 1001; color: var(--rose); }
         @keyframes fly { to { transform: translate(var(--tw), var(--th)) rotate(360deg); opacity: 0; } }
         .particle { position: fixed; top: -10%; z-index: 1; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
@@ -53,18 +45,25 @@
 </head>
 <body>
 
+    <div id="gatekeeper">
+        <h2 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 2rem;">Stop! Who is this?</h2>
+        <input type="text" id="nameInput" placeholder="Enter your name...">
+        <button class="gate-btn" onclick="checkName()">Open Surprise</button>
+        <p id="error-msg" style="color: var(--rose); margin-top: 10px; font-size: 0.8rem; display: none;">Sorry, this surprise isn't for you! ❤️</p>
+    </div>
+
     <div id="start-screen" onclick="begin()">
         <div class="heart"></div>
         <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 3rem;">For Madhura</h1>
-        <p>Tap to start our song ❤️</p>
+        <p>Tap the heart to start... ❤️</p>
     </div>
 
     <div id="main-content">
         <h1 style="font-family: 'Dancing Script'; color: var(--rose); font-size: 2.5rem;">Madhura,</h1>
         <h2 style="font-family: 'Poppins';">Will you be my Valentine?</h2>
         <div class="btn-wrap">
-            <button id="of-course" onclick="celebrate()">Of Course!</button>
-            <button id="yes-btn" onmouseover="dodge()" onclick="dodge()" style="top: 120px;">Yes</button>
+            <button id="yes-btn" onclick="celebrate()">YES</button>
+            <button id="no-btn" onmouseover="dodge()" onclick="dodge()" style="top: 140px;">NO</button>
         </div>
     </div>
 
@@ -80,6 +79,67 @@
 
     <script>
         let scale = 1;
+
+        function checkName() {
+            const name = document.getElementById('nameInput').value.trim().toLowerCase();
+            if (name === "madhura") {
+                document.getElementById('gatekeeper').style.display = 'none';
+                document.getElementById('start-screen').style.display = 'flex';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function begin() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            document.getElementById('audio').play();
+        }
+
+        function dodge() {
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const margin = 80;
+            const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+            const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+            const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            scale += 0.45;
+            yesBtn.style.transform = `scale(${scale})`;
+        }
+
+        function celebrate() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('no-btn').style.display = 'none';
+            document.getElementById('final-slide').style.display = 'flex';
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.innerHTML = ['❤️', '🌹', '✨'][Math.floor(Math.random() * 3)];
+                p.style.left = Math.random() * 100 + "vw";
+                p.style.fontSize = "25px";
+                p.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(p);
+            }, 100);
+        }
+
+        function exitProgram() {
+            document.body.classList.add('blackout');
+            document.getElementById('final-slide').classList.add('fade-out');
+            setTimeout(() => {
+                document.body.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; color:white;">
+                        <img src="us.jpg" class="final-photo" onerror="this.style.display='none'">
+                        <h1 style='font-family: Dancing Script; font-size: 3rem; margin: 0;'>Forever Yours. ❤️</h1>
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        // Sparkle Trail
         document.addEventListener('mousemove', (e) => spawnSparkle(e.pageX, e.pageY));
         document.addEventListener('touchmove', (e) => spawnSparkle(e.touches[0].pageX, e.touches[0].pageY));
 
@@ -92,50 +152,6 @@
             s.style.setProperty('--th', (Math.random() * 80 - 40) + 'px');
             document.body.appendChild(s);
             setTimeout(() => s.remove(), 1000);
-        }
-
-        function begin() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
-            document.getElementById('audio').play();
-        }
-
-        function dodge() {
-            const yesBtn = document.getElementById('yes-btn');
-            const ofCourseBtn = document.getElementById('of-course');
-            const margin = 80;
-            const maxX = window.innerWidth - yesBtn.offsetWidth - margin;
-            const maxY = window.innerHeight - yesBtn.offsetHeight - margin;
-            const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
-            yesBtn.style.position = 'fixed';
-            yesBtn.style.left = randomX + 'px';
-            yesBtn.style.top = randomY + 'px';
-            scale += 0.35;
-            ofCourseBtn.style.transform = `scale(${scale})`;
-        }
-
-        function celebrate() {
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('final-slide').style.display = 'flex';
-            setInterval(() => {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                p.innerHTML = ['❤️', '⭐', '🌹'][Math.floor(Math.random() * 3)];
-                p.style.left = Math.random() * 100 + "vw";
-                p.style.fontSize = "25px";
-                p.style.animationDuration = (Math.random() * 3 + 2) + "s";
-                document.body.appendChild(p);
-            }, 100);
-        }
-
-        // EXIT FUNCTION
-        function exitProgram() {
-            document.body.classList.add('blackout');
-            document.getElementById('final-slide').classList.add('fade-out');
-            setTimeout(() => {
-                document.body.innerHTML = "<h1 style='color: white; font-family: Dancing Script; font-size: 2rem; margin-top: 45vh;'>Forever Yours. ❤️</h1>";
-            }, 2000);
         }
     </script>
 </body>
