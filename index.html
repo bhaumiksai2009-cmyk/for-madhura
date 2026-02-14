@@ -11,7 +11,7 @@
             margin: 0; background: var(--bg); font-family: 'Poppins', sans-serif; 
             display: flex; align-items: center; justify-content: center; 
             height: 100vh; width: 100vw; overflow: hidden; text-align: center; 
-            touch-action: none;
+            touch-action: none; transition: background 2s ease;
         }
 
         /* 0. Gatekeeper Screen */
@@ -29,7 +29,6 @@
 
         /* 2. Main Question Screen */
         #main-content { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; }
-        
         .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; position: relative; margin-top: 40px; height: 200px; }
         button { padding: 15px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: transform 0.2s; }
         #yes-btn { background: var(--pink); color: white; z-index: 5; position: relative; }
@@ -40,11 +39,17 @@
         .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 77, 109, 0.2); margin: 20px; max-width: 300px; border: 2px solid var(--pink); }
         #exit-btn { margin-top: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 10px; opacity: 0.7; }
         
-        .final-photo { width: 280px; height: 280px; object-fit: cover; border-radius: 20px; border: 8px solid white; margin-bottom: 25px; animation: float 3s ease-in-out infinite; }
+        /* Final Image Styles */
+        .final-photo { 
+            width: 280px; height: 280px; object-fit: cover; 
+            border-radius: 20px; border: 8px solid white; 
+            margin-bottom: 25px; animation: float 3s ease-in-out infinite, fadeIn 2s;
+        }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        
-        /* Effects */
-        .blackout { background: black !important; transition: background 2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Background Effects */
+        .blackout { background: black !important; }
         .fade-out { opacity: 0; transition: 1s; }
         .sparkle { position: absolute; pointer-events: none; animation: fly 1s forwards; z-index: 1001; color: var(--rose); }
         @keyframes fly { to { transform: translate(var(--tw), var(--th)) rotate(360deg); opacity: 0; } }
@@ -105,17 +110,14 @@
         function dodge() {
             const noBtn = document.getElementById('no-btn');
             const yesBtn = document.getElementById('yes-btn');
-            
             const margin = 80;
             const maxX = window.innerWidth - noBtn.offsetWidth - margin;
             const maxY = window.innerHeight - noBtn.offsetHeight - margin;
             const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
             const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
-            
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
-            
             scale += 0.45;
             yesBtn.style.transform = `scale(${scale})`;
         }
@@ -124,7 +126,6 @@
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('no-btn').style.display = 'none';
             document.getElementById('final-slide').style.display = 'flex';
-            
             setInterval(() => {
                 const p = document.createElement('div');
                 p.classList.add('particle');
@@ -137,6 +138,7 @@
         }
 
         function exitProgram() {
+            // Start the transition
             document.body.classList.add('blackout');
             document.getElementById('final-slide').classList.add('fade-out');
             setTimeout(() => {
@@ -146,7 +148,7 @@
                         <h1 style='font-family: Dancing Script; font-size: 3rem; margin: 0;'>Forever Yours. ❤️</h1>
                     </div>
                 `;
-            }, 1000);
+            }, 1500);
         }
 
         // Sparkle Trail
@@ -166,4 +168,3 @@
     </script>
 </body>
 </html>
-
